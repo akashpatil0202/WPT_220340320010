@@ -1,0 +1,87 @@
+<html>
+
+<body>
+
+	<input type="text" placeholder="Enter bookid" id="p1">
+	<span id="msg">Message</span><Br /><Br />
+	<input type="text" placeholder="Enter bookname" id="p2"><Br /><Br />
+	<input type="text" placeholder="Enter price" id="p3"><Br /><Br />
+
+	<button id="b1"> Update</button>
+
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+
+<script>
+
+
+	$(() => {
+		console.log("DOM loaded")
+		$("#p1").blur(() => {
+			console.log("Blur Event Occured");
+			let input = { input: $("#p1").val() };
+			console.log(input);
+			let param = {
+				data: input,
+				url: "http://localhost:7424/Blur",
+				type: 'get',
+				datatype: "json",
+				success: (datafound) => {
+					if (datafound.status == true) {
+						console.log("success");
+						$("#p2").val(datafound.details[0].bookname);
+						$("#p3").val(datafound.details[0].price);
+						$("#msg").text("data presrent");
+						document.querySelector("#b1").disabled = false;
+
+					}
+					else {
+						$("#msg").text("data not presrent");
+					}
+				},
+				error: (datanotfound) => { console.log("Failure"); }
+
+			};
+			$.ajax(param);
+		});
+
+	});
+
+	//End of Blur Event
+
+
+
+	$("#b1").click(() => {
+		let input = { input: $("#b1").val() };
+		console.log(input);
+		let param = {
+			data: input,
+			url: "http://localhost:7424/Update",
+			type: 'get',
+			datatype: "json",
+			success: (datafound) => {
+				if (datafound.status == true) {
+					console.log("Updated Successfully");
+
+					$("#msg").text("Data Updated Successfully");
+					document.querySelector("#b1").disabled = true;
+
+				}
+
+			},
+			error: (datanotfound) => { console.log("Failure"); }
+
+		};
+		$.ajax(param);
+
+	});
+
+	//End of Update Event
+
+
+</script>
+
+
+</html>
